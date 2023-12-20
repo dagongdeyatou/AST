@@ -1,0 +1,23 @@
+var a = 1, b = 2;
+b += 1;
+let c = 3;
+const d = 4;
+let e = f(5, a, b, c, d);
+let g = a + b + c;
+
+"VariableDeclarator"(path){
+  const {id, init} = path.node;
+  let binding = path.scope.getBinding(id.name);
+  if(!types.isLiteral(init) || !binding.constant){
+    return;
+  }
+  for(let reference of binding.referencePaths){
+    reference.replaceWith(init);
+  }
+  path.remove();
+}
+
+var b = 2;
+b += 1;
+let e = f(5, 1, b, 3, 4);
+let g = 1 + b + 3;
