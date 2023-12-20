@@ -1,0 +1,32 @@
+var a = 1, b = 2;
+let c = 3;
+const d = 4;
+let e, f, g = function () { console.log('ggg'); };
+g();
+
+const visitor = {
+		"VariableDeclaration"(path){
+			const {kind, declarations} = path.node;
+			console.log(declarations.length)
+			if(declarations.length <= 1){
+				return;
+			}
+			let tmp_array = [];
+			for(let variable_declarator of declarations){
+				tmp_array.push(types.VariableDeclaration(kind,[variable_declarator]));
+			}
+			console.log(tmp_array)
+			path.replaceWithMultiple(tmp_array)
+		}
+}
+
+var a = 1;
+var b = 2;
+let c = 3;
+const d = 4;
+let e;
+let f;
+let g = function () {
+  console.log('ggg');
+};
+g();
